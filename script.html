@@ -2,8 +2,10 @@
 <html lang="en">
     <head>
         <title>FTP synchronization</title>
-        <link rel="stylesheet" href="css/bootstrap.min.css" />
-        <script src="js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="css/bootstrap.css" />
+        <script src="js/jquery-1.8.2.min.js"></script>
+        <script src="js/bootstrap.js"></script>
+        <script src="js/iface.js"></script>
     </head>
   <body>
     <div class="container">
@@ -16,9 +18,9 @@
                     <legend>Source Server Details</legend>
                     
                     <div class="control-group">
-                        <label class="control-label" for="sourceHost">Host:</label>
+                        <label class="control-label" for="srcHost">Host:</label>
                         <div class="controls">
-                            <input type="text" id="sourceHost" placeholder="Host">
+                            <input type="text" id="srcHost" placeholder="Host">
                         </div>
                     </div>
                     
@@ -35,7 +37,7 @@
                                 <input type="password" id="srcPassword" placeholder="Password">
                             </div>
                             
-                            <button class="btn">Test connection</button>
+                            <button class="btn" id="srcTest">Test connection</button>
                         </div>
                     </div>
                     
@@ -43,6 +45,7 @@
                         <label class="control-label" for="sourceDir">Source path:</label>
                         <div class="controls">
                             <input type="text" id="sourceDir" placeholder="Path">
+                            <button class="btn" id="browseSrc">Browse</button>
                         </div>
                     </div>
                     
@@ -53,9 +56,9 @@
                 <form class="form-horizontal">
                     <legend>Destination Server Details</legend>
                     <div class="control-group">
-                        <label class="control-label" for="sourceHost">Host:</label>
+                        <label class="control-label" for="dstHost">Host:</label>
                         <div class="controls">
-                            <input type="text" id="sourceHost" placeholder="Host">
+                            <input type="text" id="dstHost" placeholder="Host">
                         </div>
                     </div>
                     
@@ -63,28 +66,52 @@
                         <p class="control-label">FTP-user details</label>
                         <div class="controls">
                             <div class="control-group">
-                                <label for="srcLogin">Login:</label>
-                                <input type="text" id="srcLogin" placeholder="Login">
+                                <label for="dstLogin">Login:</label>
+                                <input type="text" id="dstLogin" placeholder="Login">
                             </div>
                       
                             <div class="control-group">
-                                <label for="srcPassword">Password:</label>
-                                <input type="password" id="srcPassword" placeholder="Password">
+                                <label for="dstPassword">Password:</label>
+                                <input type="password" id="dstPassword" placeholder="Password">
                             </div>
                             
-                            <button class="btn">Test connection</button>
+                            <button class="btn" id="dstTest">Test connection</button>
                         </div>
                     </div>
                     
                     <div class="control-group">
-                        <label class="control-label" for="sourceDir">Source path:</label>
+                        <label class="control-label" for="dstDir">Source path:</label>
                         <div class="controls">
-                            <input type="text" id="sourceDir" placeholder="Path">
+                            <input type="text" id="dstDir" placeholder="Path">
+                            <button class="btn" id="browseDst">Browse</button>
                         </div>
                     </div>
                 </form>
             </div>
         </div>
+    
+    <div class="row">
+        <div class="form-actions span3 offset4">
+          <button type="button" class="btn btn-primary">Start sync</button>
+          <button type="button" class="btn">Cancel</button>
+        </div>
     </div>
+    
+    </div>
+    
+    <div class="modal hide fade" id="popupWindow">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h3>Modal header</h3>
+        </div>
+        <div class="modal-body">
+            <p>One fine body…</p>
+        </div>
+        <div class="modal-footer">
+            <a href="#" class="btn" data-dismiss="modal">Close</a>
+            <a href="#" class="btn btn-primary">Save changes</a>
+        </div>
+    </div>
+    
   </body>
 </html>

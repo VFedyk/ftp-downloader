@@ -26,7 +26,7 @@ class FTP
         if ($this->ssl) {
             $this->connection = ftp_ssl_connect($this->host, $this->port);
         } else {
-            $this->connection = ftp_connect($this->host, $this->port)
+            $this->connection = ftp_connect($this->host, $this->port);
         }
         
         if (!$this->connection) {
