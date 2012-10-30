@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>FTP synchronization</title>
+        <link rel="stylesheet" href="css/bootstrap.min.css" />
+        <script src="js/bootstrap.min.js"></script>
+    </head>
+  <body>
+    <div class="container">
+        <div class="page-header">
+            <h1>FTP-synchronization script</h1>
+        </div>
+        <div class="row">
+            <div class="well well-mini span5">
+                <form class="form-horizontal">
+                    <legend>Source Server Details</legend>
+                    
+                    <div class="control-group">
+                        <label class="control-label" for="sourceHost">Host:</label>
+                        <div class="controls">
+                            <input type="text" id="sourceHost" placeholder="Host">
+                        </div>
+                    </div>
+                    
+                    <div class="control-group">
+                        <p class="control-label">FTP-user details</label>
+                        <div class="controls">
+                            <div class="control-group">
+                                <label for="srcLogin">Login:</label>
+                                <input type="text" id="srcLogin" placeholder="Login">
+                            </div>
+                      
+                            <div class="control-group">
+                                <label for="srcPassword">Password:</label>
+                                <input type="password" id="srcPassword" placeholder="Password">
+                            </div>
+                            
+                            <button class="btn">Test connection</button>
+                        </div>
+                    </div>
+                    
+                    <div class="control-group">
+                        <label class="control-label" for="sourceDir">Source path:</label>
+                        <div class="controls">
+                            <input type="text" id="sourceDir" placeholder="Path">
+                        </div>
+                    </div>
+                    
+                </form>
+            </div>
+
+            <div class="well well-mini span5">
+                <form class="form-horizontal">
+                    <legend>Destination Server Details</legend>
+                    <div class="control-group">
+                        <label class="control-label" for="sourceHost">Host:</label>
+                        <div class="controls">
+                            <input type="text" id="sourceHost" placeholder="Host">
+                        </div>
+                    </div>
+                    
+                    <div class="control-group">
+                        <p class="control-label">FTP-user details</label>
+                        <div class="controls">
+                            <div class="control-group">
+                                <label for="srcLogin">Login:</label>
+                                <input type="text" id="srcLogin" placeholder="Login">
+                            </div>
+                      
+                            <div class="control-group">
+                                <label for="srcPassword">Password:</label>
+                                <input type="password" id="srcPassword" placeholder="Password">
+                            </div>
+                            
+                            <button class="btn">Test connection</button>
+                        </div>
+                    </div>
+                    
+                    <div class="control-group">
+                        <label class="control-label" for="sourceDir">Source path:</label>
+                        <div class="controls">
+                            <input type="text" id="sourceDir" placeholder="Path">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+  </body>
+</html>
