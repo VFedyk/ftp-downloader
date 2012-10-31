@@ -46,3 +46,9 @@
 #srcTest, #dstTest {
     position: relative;
 }
+
+#fsTree {
+    border: solid 1px #ABAF00;
+    height: 350px;
+    padding-top: 10px;
+}

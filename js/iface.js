@@ -47,6 +47,21 @@ function showSuccess(message)
     $('#popupWindow').modal();
 }
 
+function showTreeDialog(serverType)
+{
+    var host = $('#' + serverType + 'Host').val();
+    var login =  $('#' + serverType + 'Login').val();
+    var password = $('#' + serverType + 'Password').val();
+
+    var srvType = (serverType == 'src') ? 'source' : 'destination';
+    $('#popupWindow .modal-header h3').html('Choosing files on ' + srvType + ' server');
+    $('#popupWindow .modal-body').html("<div id=\"fsTree\"></div>");
+    $('#popupWindow').modal();
+    $('#fsTree').html("<ul><li id=\"phtml_1\"><a href=\"#\">Root node 1</a><ul><li id=\"phtml_2\"><a href=\"#\">Child node 1</a></li><li id=\"phtml_3\"><a href=\"#\">Child node 2</a></li></ul></li><li id=\"phtml_4\"><a href=\"#\">Root node 2</a></li></ul>");
+
+    $('#fsTree').jstree();
+}
+
 function showProgress (title, message, progress)
 {
     $('#popupWindow .modal-header h3').html(title);
@@ -77,28 +92,11 @@ $(function() {
     
     $('#browseSrc').click(function(e){
         e.preventDefault();
-        var host = $('#srcHost').val();
-        var login =  $('#srcLogin').val();
-        var password = $('#srcPassword').val();
-        console.log(host + " " + login + " " + password);
-        var jqxr = $.getJSON('ajax.php?server=source' 
-            + '&host=' + host
-            + '&login=' + login 
-            + '&password=' + password
-        );
-        
-        jqxr.done(function(data){
-            $('#popupWindow .modal-body').html(data.status);
-            $('#popupWindow').modal();
-        });
+        showTreeDialog('src');
     });
     
     $('#browseDst').click(function(e){
         e.preventDefault();
-        var jqxr = $.getJSON('ajax.php?server=destination');
-        jqxr.done(function(data){
-            $('#popupWindow .modal-body').html(data.status);
-            $('#popupWindow').modal();
-        });
+        showTreeDialog('dst');
     });
 });

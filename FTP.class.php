@@ -12,6 +12,8 @@ class FTP
     private $connected;
     private $lastError;
     
+    private $currentDir;
+    
     public function __construct($host='localhost', $user='anonymous', $password='', $port=21, $ssl=false)
     {
         $this->host = $host;
@@ -36,11 +38,14 @@ class FTP
         if (!$this->connected) {
             throw new Exception('Cannot connect to FTP-server');
         }
+        
+        $this->currentDir = $this->pwd();
     }
     
     public function close()
     {
         ftp_close($this->connection);
+        $this->connected = false;
         
         return $this;
     }
@@ -106,6 +111,40 @@ class FTP
     
     public function pwd()
     {
-        return ftp_pwd($this->connection);
+        $this->currentDir = ftp_pwd($this->connection);
+        
+        return $this->currentDir;
+    }
+    
+    public function ls()
+    {
+        $list = ftp_nlist($this->connection, ".");
+        
+        if (empty($list)) {
+            return $list;
+        }
+        
+        $detailedList = array();
+        foreach ($list as $item) {
+            if ($this->chdir(basename($item))) {
+                $this->chdir('..');
+                $detailedList[$item] = 'directory';
+            } else {
+                $detailedList[$item] = 'file';
+            }
+        }
+        
+        
+        return $detailedList;
+    }
+    
+    public function pasv($bool)
+    {
+        return ftp_pasv($this->connection, $bool);
+    }
+    
+    public function chdir($directory)
+    {
+        return ftp_chdir($this->connection, $directory);
     }
 }
