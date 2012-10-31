@@ -1,4 +1,5 @@
-function testConnection (serverType) {
+function testConnection (serverType) 
+{
         var host = $('#' + serverType + 'Host').val();
         var login =  $('#' + serverType + 'Login').val();
         var password = $('#' + serverType + 'Password').val();
@@ -11,9 +12,43 @@ function testConnection (serverType) {
         );
         
         jqxr.done(function(data){
-            $('#popupWindow .modal-body').html(data.status);
-            $('#popupWindow').modal();
+            if (data.status === 'success') {
+                showInfo('Connection was succesful');
+            } else {
+                showError('Connection failed');
+            }
         });
+}
+
+function showError(message)
+{
+    $('#popupWindow .modal-header h3').html('Error');
+    $('#popupWindow .modal-body').html(message);
+    $('#popupWindow').modal();
+}
+
+function showInfo(message)
+{
+    $('#popupWindow .modal-header h3').html('Information');
+    $('#popupWindow .modal-body').html(message);
+    $('#popupWindow').modal();
+}
+
+function showProgress (title, message, progress)
+{
+    $('#popupWindow .modal-header h3').html(title);
+    
+    var content = "<p>" + message + " <span id=\"progressLabel\" class=\"pull-right\">" + progress + "%<\/span></p>";
+    content += "<div class=\"progress progress-success progress-striped active\"><div id=\"progressBar\" class=\"bar\" style=\"width: " + progress + "%\"></div><\/div>";
+    
+    $('#popupWindow .modal-body').html(content);
+    $('#popupWindow').modal();
+}
+
+function changeProgress (progress)
+{
+    $('#progressLabel').html(progress + '%');
+    $('#progressBar').width(progress + '%');
 }
 
 $(function() {
