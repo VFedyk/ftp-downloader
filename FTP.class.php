@@ -150,4 +150,9 @@ class FTP
     {
         return ftp_chdir($this->connection, $directory);
     }
+    
+    public function systype()
+    {
+        return ftp_systype($this->connection);
+    }
 }

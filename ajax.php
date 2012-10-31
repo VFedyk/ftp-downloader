@@ -28,13 +28,18 @@ if (isset($_GET['operation']) && $_GET['operation'] == 'get_filelist') {
         ->connect();
     $list = $ftp->ls($_GET['path']); 
     
-    //var_dump($list);die();
-    
     $filelist = array();
     foreach ($list as $file => $type) {
         $tempArr = array();
         $tempArr['data'] = $file;
-        $tempArr['attr']['id'] = str_replace("/", ".", $_GET['path'] . $file);
+        
+        $id = str_replace("/", "_", $_GET['path'] . $file);
+        
+        if ($id[0] == "_") {
+            $id = substr($id, 1, strlen($id) - 1);
+        }
+        
+        $tempArr['attr']['id'] = $id;
         
         if ($type == 'directory') {
             $tempArr['icon'] = 'folder';
