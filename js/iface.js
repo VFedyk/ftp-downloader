@@ -3,7 +3,6 @@ function testConnection (serverType)
         var host = $('#' + serverType + 'Host').val();
         var login =  $('#' + serverType + 'Login').val();
         var password = $('#' + serverType + 'Password').val();
-        console.log(host + " " + login + " " + password);
         var srvType = (serverType == 'src') ? 'source' : 'destination';
         var jqxr = $.getJSON('ajax.php?server=' + srvType
             + '&host=' + host
@@ -28,6 +27,7 @@ function showError(message)
     $('#popupWindow .modal-header h3').html('Error');
     var content = "<p class=\"error-message\">" + message + "</p>";
     $('#popupWindow .modal-body').html(content);
+    $('#popupWindow .modal-footer').html("<a href=\"#\" class=\"btn\" data-dismiss=\"modal\">Close</a>");
     $('#popupWindow').modal();
 }
 
@@ -36,6 +36,7 @@ function showInfo(message)
     $('#popupWindow .modal-header h3').html('Information');
     var content = "<p class=\"info-message\">" + message + "</p>";
     $('#popupWindow .modal-body').html(content);
+    $('#popupWindow .modal-footer').html("<a href=\"#\" class=\"btn\" data-dismiss=\"modal\">Ok</a>");
     $('#popupWindow').modal();
 }
 
@@ -44,6 +45,7 @@ function showSuccess(message)
     $('#popupWindow .modal-header h3').html('Information');
     var content = "<p class=\"success-message\">" + message + "</p>";
     $('#popupWindow .modal-body').html(content);
+    $('#popupWindow .modal-footer').html("<a href=\"#\" class=\"btn\" data-dismiss=\"modal\">Ok</a>");
     $('#popupWindow').modal();
 }
 
@@ -55,10 +57,39 @@ function showTreeDialog(serverType)
 
     var srvType = (serverType == 'src') ? 'source' : 'destination';
     $('#popupWindow .modal-header h3').html('Choosing files on ' + srvType + ' server');
-    $('#popupWindow .modal-body').html("<div id=\"fsTree\"></div>");
+    $('#popupWindow .modal-body').html("<div id=\"fsTree\"></div><div id=\"fsFileinfo\"></div>");
+    var footerContent = "<a href=\"#\" class=\"btn\" data-dismiss=\"modal\">Cancel</a>";
+    footerContent += "<a id=\"selectBtn\" href=\"#\" class=\"btn btn-primary disabled\">Select</a>";
+    $('#popupWindow .modal-footer').html(footerContent);
+    $('#fsFileinfo').data('servertype', serverType);
     $('#popupWindow').modal();
 
-    $('#fsTree').jstree({
+    $('#selectBtn').on('click', function(e) {
+        if ($(this).hasClass('disabled')) {
+            return;
+        }
+        
+        $('#' + serverType + 'Dir').val($('#fsFileinfo').data('path'));
+        $('#popupWindow').modal('hide');
+    });
+    
+    $('#fsTree')
+    .bind('select_node.jstree', function(event, data) {
+        var path = data.rslt.obj.attr('path');
+        var type = data.rslt.obj.attr('rel');
+        
+        if ((type == 'default' && serverType == 'src') || (type == 'folder' && serverType == 'dst')) {
+            $('#selectBtn').removeClass('disabled');
+            $('#fsFileinfo').data('path', path);
+        } else {
+            if (!$('#selectBtn').hasClass('disabled')) {
+                $('#selectBtn').addClass('disabled');
+            }
+            $('#fsFileinfo').data('path', '');
+        }
+    })
+    
+    .jstree({
         plugins: ["themes","json_data","ui","types"],
         "json_data" : {
             "ajax" : {
@@ -106,8 +137,7 @@ function showTreeDialog(serverType)
                 }
             }
         },
-
-});
+    });
 }
 
 function showProgress (title, message, progress)

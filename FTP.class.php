@@ -34,7 +34,7 @@ class FTP
         if (!$this->connection) {
             throw new Exception('Cannot connect to this host and port pair.');
         }
-        $this->connected = ftp_login($this->connection, $this->user, $this->password);
+        $this->connected = @ftp_login($this->connection, $this->user, $this->password);
         if (!$this->connected) {
             throw new Exception('Cannot connect to FTP-server');
         }
@@ -121,26 +121,29 @@ class FTP
         if ($path !== '.') {
             $this->chdir($path);
         }
-        $list = ftp_nlist($this->connection, ".");
-        
-        if (empty($list)) {
-            return $list;
-        }
         
         $detailedList = array();
-        foreach ($list as $item) {
-            if ($this->chdir(basename($item))) {
-                $this->chdir('..');
-                $detailedList[$item] = 'directory';
-            } else {
-                $detailedList[$item] = 'file';
+        $contents = ftp_rawlist ($this->connection, ".");
+
+        if(count($contents)){
+            foreach($contents as $line){
+
+                preg_match("#([drwx\-]+)([\s]+)([0-9]+)([\s]+)([a-zA-Z0-9\.]+)([\s]+)([a-zA-Z0-9\.]+)([\s]+)([0-9]+)([\s]+)([a-zA-Z]+)([\s]+)([0-9]+)([\s]+)([0-9]+[\:0-9]*)([\s]+)([a-zA-Z0-9\.\-\_ ]+)#si", $line, $out);
+
+                //var_dump($contents); die();
+                
+                if (isset($out[3])) {
+                    if($out[3] != 1 && ($out[17] == "." || $out[17] == "..")){
+                        // do nothing
+                    } else {
+                        $detailedList[$out[17]] = $out[3] == 1 ? "file":"directory";
+                    }
+                }
             }
         }
-        
-        
         return $detailedList;
     }
-    
+     
     public function pasv($bool)
     {
         return ftp_pasv($this->connection, $bool);
@@ -148,7 +151,7 @@ class FTP
     
     public function chdir($directory)
     {
-        return ftp_chdir($this->connection, $directory);
+        return @ftp_chdir($this->connection, $directory);
     }
     
     public function systype()
