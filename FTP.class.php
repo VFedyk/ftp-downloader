@@ -103,4 +103,9 @@ class FTP
     {
         return $this->lastError;
     }
+    
+    public function pwd()
+    {
+        return ftp_pwd($this->connection);
+    }
 }

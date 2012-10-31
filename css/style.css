@@ -1,0 +1,48 @@
+.error-message {
+    background-image: url('../img/error.png');
+    background-repeat: no-repeat;
+    padding-left: 72px;
+    min-height: 39px;
+    padding-top: 25px;
+    font-size: 20px;
+    margin: 0 auto;
+    width: 200px;
+}
+
+.info-message {
+    background-image: url('../img/info.png');
+    background-repeat: no-repeat;
+    padding-left: 72px;
+    min-height: 39px;
+    padding-top: 25px;
+    font-size: 20px;
+    margin: 0 auto;
+    width: 200px;
+}
+
+.success-message {
+    background-image: url('../img/success.png');
+    background-repeat: no-repeat;
+    padding-left: 72px;
+    min-height: 39px;
+    padding-top: 25px;
+    font-size: 20px;
+    margin: 0 auto;
+    width: 200px;
+}
+
+.preloader {
+    background: url("../img/loader.gif") no-repeat scroll 2px 2px transparent;
+    height: 24px;
+    padding: 2px;
+    position: absolute;
+    right: -45px;
+    top: 0px;
+    width: 24px;
+    z-index: 1000;
+    display: none;
+}
+
+#srcTest, #dstTest {
+    position: relative;
+}

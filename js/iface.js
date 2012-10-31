@@ -11,9 +11,12 @@ function testConnection (serverType)
             + '&password=' + password
         );
         
+        $('#' + serverType + 'Test .preloader').show();
+        
         jqxr.done(function(data){
+            $('#' + serverType + 'Test .preloader').hide();
             if (data.status === 'success') {
-                showInfo('Connection was succesful');
+                showSuccess('Connection succesful');
             } else {
                 showError('Connection failed');
             }
@@ -23,14 +26,24 @@ function testConnection (serverType)
 function showError(message)
 {
     $('#popupWindow .modal-header h3').html('Error');
-    $('#popupWindow .modal-body').html(message);
+    var content = "<p class=\"error-message\">" + message + "</p>";
+    $('#popupWindow .modal-body').html(content);
     $('#popupWindow').modal();
 }
 
 function showInfo(message)
 {
     $('#popupWindow .modal-header h3').html('Information');
-    $('#popupWindow .modal-body').html(message);
+    var content = "<p class=\"info-message\">" + message + "</p>";
+    $('#popupWindow .modal-body').html(content);
+    $('#popupWindow').modal();
+}
+
+function showSuccess(message)
+{
+    $('#popupWindow .modal-header h3').html('Information');
+    var content = "<p class=\"success-message\">" + message + "</p>";
+    $('#popupWindow .modal-body').html(content);
     $('#popupWindow').modal();
 }
 
