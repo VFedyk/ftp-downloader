@@ -116,8 +116,11 @@ class FTP
         return $this->currentDir;
     }
     
-    public function ls()
+    public function ls($path = ".")
     {
+        if ($path !== '.') {
+            $this->chdir($path);
+        }
         $list = ftp_nlist($this->connection, ".");
         
         if (empty($list)) {

@@ -7,9 +7,8 @@ $ftp->setHost('ftp.kernel.org')
     ->connect();
     
 $currentDir = $ftp->pwd();
-$ftp->pasv($true);
-$ftp->chdir('pub/linux');
-$fileList = $ftp->ls();
+$ftp->pasv(true);
+$fileList = $ftp->ls("/pub");
 
 echo $currentDir;
 
