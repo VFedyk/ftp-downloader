@@ -5,6 +5,7 @@ include_once "FTP.class.php";
 function downloadCallback ($downloaded, $allSize, $params)
 {
     $progress = $downloaded/$allSize*100;
+    $progress = round($progress, 2);
     
     $params['progress'] = $progress;
     $params['downloaded'] = $downloaded;
@@ -13,10 +14,17 @@ function downloadCallback ($downloaded, $allSize, $params)
     file_put_contents('temp.tmp', serialize($params));
 }
 
+function extractFilenameFromPath ($filename)
+{
+    return
+}
+
 $ftp = new FTP();
 
 if (isset($_GET['operation']) && $_GET['operation'] == 'downloadfile') {
-    $ftp->setHost('ftp.iinet.net.au')
+    $ftp->setHost($_GET['srcHost'])
+        ->setLogin($_GET['srcLogin']
+        ->setPassword($_GET['srcPassword']
         ->connect();
     $ftp->pasv(true);
 
@@ -27,8 +35,9 @@ if (isset($_GET['operation']) && $_GET['operation'] == 'downloadfile') {
     $params = array();
     $params['id'] = $_GET['id'];
     
-    $filename = "test";
+    $filename = substr(strpos($_;
     $path = realpath('temp') . DIRECTORY_SEPARATOR . $filename;
+    file_put_contents('temp.tmp', '');
 
     $ftp->downloadFile("/test50MB.dat", $path, 'downloadCallback', $params);
     

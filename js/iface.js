@@ -48,16 +48,14 @@ function getDownloadProgress()
             var jqxr = $.getJSON('ajax.php?operation=get_progress&id=' + id);
             
             jqxr.done(function(data) {
-                if (data.downloaded == data.filesize) {
-                    showSuccess('File is downloaded');
-                    clearTimeout(appInterval);
-                    
+                if ((data.id+'') !== (id+'')) {
+
                     return;
                 }
                 
-                if (data.id !== id) {
+                if (data.downloaded == data.filesize) {
+                    showSuccess('File is downloaded');
                     clearTimeout(appInterval);
-                    showError('Error when downloading');
                     
                     return;
                 }
