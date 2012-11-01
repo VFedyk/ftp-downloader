@@ -1,6 +1,8 @@
 <?php
 
 include_once "FTP.class.php";
+set_time_limit(0);
+
 
 function downloadCallback ($downloaded, $allSize, $params)
 {
@@ -16,15 +18,18 @@ function downloadCallback ($downloaded, $allSize, $params)
 
 function extractFilenameFromPath ($filename)
 {
-    return
+    $slashPos = strpos($filename, "/", -1);
+    $result = substr($filename, $slashpos + 1);
+
+    return $result;
 }
 
 $ftp = new FTP();
 
 if (isset($_GET['operation']) && $_GET['operation'] == 'downloadfile') {
     $ftp->setHost($_GET['srcHost'])
-        ->setLogin($_GET['srcLogin']
-        ->setPassword($_GET['srcPassword']
+        ->setUser($_GET['srcLogin'])
+        ->setPassword($_GET['srcPassword'])
         ->connect();
     $ftp->pasv(true);
 
@@ -35,11 +40,15 @@ if (isset($_GET['operation']) && $_GET['operation'] == 'downloadfile') {
     $params = array();
     $params['id'] = $_GET['id'];
     
-    $filename = substr(strpos($_;
+    $filename = extractFilenameFromPath($_GET['srcFile']);
     $path = realpath('temp') . DIRECTORY_SEPARATOR . $filename;
+    
+    if (!file_exists('temp.tmp')) {
+        touch('temp.tmp');
+    }
     file_put_contents('temp.tmp', '');
 
-    $ftp->downloadFile("/test50MB.dat", $path, 'downloadCallback', $params);
+    $ftp->downloadFile($_GET['srcFile'], $path, 'downloadCallback', $params);
     
     exit;
 }
