@@ -18,9 +18,9 @@ function downloadCallback ($downloaded, $allSize, $params)
 
 function extractFilenameFromPath ($filename)
 {
-    $slashPos = strpos($filename, "/", -1);
-    $result = substr($filename, $slashpos + 1);
-
+    $exploded = explode("/", $filename);
+    $result = $exploded[count($exploded)-1];
+    
     return $result;
 }
 
