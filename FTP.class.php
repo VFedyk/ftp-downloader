@@ -158,4 +158,34 @@ class FTP
     {
         return ftp_systype($this->connection);
     }
+    
+    public function downloadFile ($remoteFile, $localFile, $callback, $callbackParams)
+    {
+        touch($localFile);
+        
+        $remoteFilesize = $this->size($remoteFile);
+        
+        $ret = ftp_nb_get($this->connection, 
+                          $localFile, 
+                          $remoteFile, 
+                          FTP_BINARY, 
+                          FTP_AUTORESUME);
+                      
+        while ($ret == FTP_MOREDATA) {
+            clearstatcache();
+            $downloaded = filesize($localFile);
+            call_user_func($callback, $downloaded, $remoteFilesize, $callbackParams);
+            $ret = ftp_nb_continue($this->connection);
+        }
+        
+        if ($ret != FTP_FINISHED) {
+           echo "There was an error downloading the file...";
+           exit(1);
+        }
+    }
+    
+    public function size ($remoteFile)
+    {
+        return ftp_size($this->connection, $remoteFile);
+    }
 }

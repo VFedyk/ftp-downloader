@@ -50,7 +50,7 @@
                         <label class="control-label" for="srcDir">Source path:</label>
                         <div class="controls">
                             <input type="text" id="srcDir" placeholder="Path">
-                            <button class="btn" id="browseSrc">Browse</button>
+                            <button class="btn" id="srcBrowse">Browse<div class="preloader"></div></button>
                         </div>
                     </div>
                     
@@ -85,10 +85,10 @@
                     </div>
                     
                     <div class="control-group">
-                        <label class="control-label" for="dstDir">Source path:</label>
+                        <label class="control-label" for="dstDir">Destination path:</label>
                         <div class="controls">
                             <input type="text" id="dstDir" placeholder="Path">
-                            <button class="btn" id="browseDst">Browse</button>
+                            <button class="btn" id="dstBrowse">Browse<div class="preloader"></div></button>
                         </div>
                     </div>
                 </form>
@@ -97,7 +97,7 @@
     
     <div class="row">
         <div class="form-actions span3 offset4">
-          <button type="button" class="btn btn-primary">Start sync</button>
+          <button type="button" class="btn btn-primary" id="startProcess">Start sync</button>
           <button type="button" class="btn">Cancel</button>
         </div>
     </div>

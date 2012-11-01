@@ -1,23 +1,118 @@
-function testConnection (serverType) 
+function step1checkingCallback (params) {
+    if (params.result) {
+        changeProgress(0, 'Checking connection to destination server...');
+        testConnection('dst', step2checkingCallback, {});
+    } else {
+        showError('Connection failed');
+    }
+}
+
+function step2checkingCallback (params) {
+    if (params.result) {
+        changeProgress(0, 'Trying to download file...');
+        getDownloadProgress();
+    } else {
+        showError('Connection failed');
+    }
+}
+
+function getDownloadProgress()
+{
+    var srcHost = $('#srcHost').val();
+    var srcLogin = $('#srcLogin').val();
+    var srcPassword = $('#srcPassword').val();
+    var srcFile = $('#srcDir').val();
+        
+    var dstHost = $('#dstHost').val();
+    var dstLogin = $('#dstLogin').val();
+    var dstPassword = $('#dstPassword').val();
+    var dstDir = $('#dstDir').val();
+    
+    var today = new Date();
+    var id = today.getTime();
+    
+    $('#progressData').load('ajax.php',
+                            'operation=downloadfile' +
+                            '&srcHost=' + srcHost +
+                            '&srcLogin=' + srcLogin +
+                            '&srcPassword=' + srcPassword +
+                            '&srcFile=' + srcFile +
+                            '&dstHost=' + dstHost +
+                            '&dstLogin=' + dstLogin +
+                            '&dstPassword=' + dstPassword +
+                            '&dstDir=' + dstDir +
+                            '&id=' + id
+                        );
+    
+    var appInterval = setInterval(function() { 
+            var jqxr = $.getJSON('ajax.php?operation=get_progress&id=' + id);
+            
+            jqxr.done(function(data) {
+                if (data.downloaded == data.filesize) {
+                    showSuccess('File is downloaded');
+                    clearTimeout(appInterval);
+                    
+                    return;
+                }
+                
+                if (data.id !== id) {
+                    clearTimeout(appInterval);
+                    showError('Error when downloading');
+                    
+                    return;
+                }
+                
+                changeProgress(data.progress, 'Downloading file...');
+            })
+        }, 1000);
+}
+
+function testingCallback (params) 
+{
+    $('#' + params.serverType + 'Test .preloader').hide();
+    if (params.result) {
+        showSuccess('Connection succesful');
+    } else {
+        showError('Connection failed');
+    }
+}
+
+function browsingCallback (params) 
+{
+    $('#' + params.serverType + 'Browse .preloader').hide();
+    if (params.result) {
+        showTreeDialog(params.serverType);
+    } else {
+        showError('Connection failed');
+    }
+}
+
+function testConnection (serverType, callback, params) 
 {
         var host = $('#' + serverType + 'Host').val();
         var login =  $('#' + serverType + 'Login').val();
         var password = $('#' + serverType + 'Password').val();
         var srvType = (serverType == 'src') ? 'source' : 'destination';
-        var jqxr = $.getJSON('ajax.php?server=' + srvType
-            + '&host=' + host
-            + '&login=' + login 
-            + '&password=' + password
-        );
         
-        $('#' + serverType + 'Test .preloader').show();
+        var jqxr = $.ajax({
+                        url: "ajax.php",
+                        dataType: 'json',
+                        data: { 'server': srvType,
+                                'host': host,
+                                'login': login,
+                                'password': password },
+                    });
+        
+        params.serverType = serverType;
+        params.result = false;
         
         jqxr.done(function(data){
-            $('#' + serverType + 'Test .preloader').hide();
             if (data.status === 'success') {
-                showSuccess('Connection succesful');
+                params.result = true;
+                callback(params);
             } else {
-                showError('Connection failed');
+                params.result = false;
+                callback(params);
             }
         });
 }
@@ -144,15 +239,17 @@ function showProgress (title, message, progress)
 {
     $('#popupWindow .modal-header h3').html(title);
     
-    var content = "<p>" + message + " <span id=\"progressLabel\" class=\"pull-right\">" + progress + "%<\/span></p>";
+    var content = "<p><span id=\"progressMessage\">" + message + "</span> <span id=\"progressLabel\" class=\"pull-right\">" + progress + "%<\/span></p>";
     content += "<div class=\"progress progress-success progress-striped active\"><div id=\"progressBar\" class=\"bar\" style=\"width: " + progress + "%\"></div><\/div>";
-    
+    content += "<div id=\"progressData\"></div>";
     $('#popupWindow .modal-body').html(content);
+    $('#popupWindow .modal-footer').html("<a href=\"#\" class=\"btn\" data-dismiss=\"modal\">Cancel</a>");
     $('#popupWindow').modal();
 }
 
-function changeProgress (progress)
+function changeProgress (progress, message)
 {
+    $('#progressMessage').html(message);
     $('#progressLabel').html(progress + '%');
     $('#progressBar').width(progress + '%');
 }
@@ -160,21 +257,49 @@ function changeProgress (progress)
 $(function() {
     $('#srcTest').click(function(e){
         e.preventDefault();
-        testConnection('src');
+        $('#srcTest .preloader').show();
+        testConnection('src', testingCallback, {});
     });
     
     $('#dstTest').click(function(e){
         e.preventDefault();
-        testConnection('dst');
+        $('#dstTest .preloader').show();
+        testConnection('dst', testingCallback, {});
     });
     
-    $('#browseSrc').click(function(e){
+    $('#srcBrowse').click(function(e){
         e.preventDefault();
-        showTreeDialog('src');
+        $('#srcBrowse .preloader').show();
+        testConnection('src', browsingCallback, {});
     });
     
-    $('#browseDst').click(function(e){
+    $('#dstBrowse').click(function(e){
         e.preventDefault();
-        showTreeDialog('dst');
+        $('#dstBrowse .preloader').show();
+        testConnection('dst', browsingCallback, {});
+    });
+    
+    $('#startProcess').click(function(e) {
+        var srcHost = $('#srcHost').val();
+        var srcLogin = $('#srcLogin').val();
+        var srcPassword = $('#srcPassword').val();
+        var srcFile = $('#srcDir').val();
+        
+        var dstHost = $('#dstHost').val();
+        var dstLogin = $('#dstLogin').val();
+        var dstPassword = $('#dstPassword').val();
+        var dstDir = $('#dstDir').val();
+        
+        if (srcHost == '' || srcLogin == '' || srcFile == '' 
+            || dstHost == '' || dstLogin == '' || dstDir == '') {
+            showError('You need to fill all fields!');
+            
+            return;
+        }
+        
+        showProgress('Please wait', 'Checking connection to source server...', 0);
+        testConnection('src', step1checkingCallback, {});
+        
+        return;
     });
 });

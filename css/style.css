@@ -6,7 +6,7 @@
     padding-top: 25px;
     font-size: 20px;
     margin: 0 auto;
-    width: 200px;
+    width: 220px;
 }
 
 .info-message {
@@ -17,7 +17,7 @@
     padding-top: 25px;
     font-size: 20px;
     margin: 0 auto;
-    width: 200px;
+    width: 220px;
 }
 
 .success-message {
@@ -28,7 +28,7 @@
     padding-top: 25px;
     font-size: 20px;
     margin: 0 auto;
-    width: 200px;
+    width: 220px;
 }
 
 .preloader {
@@ -43,7 +43,7 @@
     display: none;
 }
 
-#srcTest, #dstTest {
+#srcTest, #dstTest, #srcBrowse, #dstBrowse {
     position: relative;
 }
 
@@ -52,4 +52,10 @@
     height: 350px;
     padding-top: 10px;
     overflow: auto;
+}
+
+#progressData {
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
 }

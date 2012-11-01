@@ -2,7 +2,47 @@
 
 include_once "FTP.class.php";
 
+function downloadCallback ($downloaded, $allSize, $params)
+{
+    $progress = $downloaded/$allSize*100;
+    
+    $params['progress'] = $progress;
+    $params['downloaded'] = $downloaded;
+    $params['filesize'] = $allSize;
+    
+    file_put_contents('temp.tmp', serialize($params));
+}
+
 $ftp = new FTP();
+
+if (isset($_GET['operation']) && $_GET['operation'] == 'downloadfile') {
+    $ftp->setHost('ftp.iinet.net.au')
+        ->connect();
+    $ftp->pasv(true);
+
+    if (!file_exists('temp')) {
+        mkdir('temp');
+    }
+    
+    $params = array();
+    $params['id'] = $_GET['id'];
+    
+    $filename = "test";
+    $path = realpath('temp') . DIRECTORY_SEPARATOR . $filename;
+
+    $ftp->downloadFile("/test50MB.dat", $path, 'downloadCallback', $params);
+    
+    exit;
+}
+
+if (isset($_GET['operation']) && $_GET['operation'] == 'get_progress') {
+    $rawData = file_get_contents('temp.tmp');
+    $params = unserialize($rawData);
+    
+    echo json_encode($params);
+    
+    exit;
+}
 
 if (isset($_GET['operation']) && $_GET['operation'] == 'get_filelist') {
     
