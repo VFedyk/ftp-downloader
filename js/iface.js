@@ -274,13 +274,11 @@ $(function() {
         var srcPassword = $('#srcPassword').val();
         var srcFile = $('#srcDir').val();
         
-        var dstHost = $('#dstHost').val();
-        var dstLogin = $('#dstLogin').val();
-        var dstPassword = $('#dstPassword').val();
-        var dstDir = $('#dstDir').val();
+        if (srcLogin == '') {
+            srcLogin = 'anonymous';
+        }
         
-        if (srcHost == '' || srcLogin == '' || srcFile == '' 
-            || dstHost == '' || dstLogin == '' || dstDir == '') {
+        if (srcHost == '' || srcLogin == '' || srcFile == '') {
             showError('You need to fill all fields!');
             
             return;
