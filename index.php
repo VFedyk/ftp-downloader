@@ -77,5 +77,9 @@
         </div>
     </div>
     
+    <div class="row">
+        <p>2012 &copy; Copyrights <a href="http://novitiligo.com">Natural Herbs</a></p>
+    </div>
+    
   </body>
 </html>
