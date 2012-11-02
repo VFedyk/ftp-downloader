@@ -35,6 +35,7 @@ class FTP
             throw new Exception('Cannot connect to this host and port pair.');
         }
         $this->connected = @ftp_login($this->connection, $this->user, $this->password);
+        
         if (!$this->connected) {
             throw new Exception('Cannot connect to FTP-server');
         }

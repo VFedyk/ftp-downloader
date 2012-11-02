@@ -55,7 +55,7 @@
                     </div>
                     
                     <div class="form-actions">
-                        <button type="button" class="btn btn-primary btn-large" id="startProcess">Start sync</button>
+                        <button type="button" class="btn btn-inverse btn-large" id="startProcess">Start sync</button>
                     </div>
                     
                 </form>

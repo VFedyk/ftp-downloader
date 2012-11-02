@@ -1,3 +1,27 @@
+function formatBytes(bytesAmount)
+{
+    var suffix = 'bytes';
+    
+    if (bytesAmount > 1024) {
+        suffix = 'KB';
+        bytesAmount /= 1024;
+    }
+    
+    if (bytesAmount > 1024) {
+        suffix = 'MB';
+        bytesAmount /= 1024;
+    }
+    
+    if (bytesAmount > 1024) {
+        suffix = 'GB';
+        bytesAmount /= 1024;
+    }
+    
+    bytesAmount = Math.round(bytesAmount * 100) / 100;
+    
+    return bytesAmount + ' ' + suffix;
+}
+
 function step1checkingCallback (params) {
     if (params.result) {
         changeProgress(0, 'Trying to download file...');
@@ -13,11 +37,10 @@ function getDownloadProgress()
     var srcLogin = $('#srcLogin').val();
     var srcPassword = $('#srcPassword').val();
     var srcFile = $('#srcDir').val();
-        
-    var dstHost = $('#dstHost').val();
-    var dstLogin = $('#dstLogin').val();
-    var dstPassword = $('#dstPassword').val();
-    var dstDir = $('#dstDir').val();
+    
+    if (srcLogin == '') {
+        srcLogin = 'anonymous';
+    }
     
     var today = new Date();
     var id = today.getTime();
@@ -28,10 +51,6 @@ function getDownloadProgress()
                             '&srcLogin=' + srcLogin +
                             '&srcPassword=' + srcPassword +
                             '&srcFile=' + srcFile +
-                            '&dstHost=' + dstHost +
-                            '&dstLogin=' + dstLogin +
-                            '&dstPassword=' + dstPassword +
-                            '&dstDir=' + dstDir +
                             '&id=' + id
                         );
     
@@ -51,7 +70,9 @@ function getDownloadProgress()
                     return;
                 }
                 
-                changeProgress(data.progress, 'Downloading file...');
+                var downloadingMessage = 'Downloading file... [';
+                downloadingMessage += formatBytes(data.downloaded) + " / " + formatBytes(data.filesize) + "]";
+                changeProgress(data.progress, downloadingMessage);
             })
         }, 1000);
 }

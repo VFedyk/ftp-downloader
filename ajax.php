@@ -27,6 +27,15 @@ function extractFilenameFromPath ($filename)
 $ftp = new FTP();
 
 if (isset($_GET['operation']) && $_GET['operation'] == 'downloadfile') {
+    
+    if (empty($_GET['srcHost'])) {
+        $_GET['srcHost'] = 'localhost';
+    }
+    
+    if (empty($_GET['srcLogin'])) {
+        $_GET['srcLogin'] = 'anonymous';
+    }
+    
     $ftp->setHost($_GET['srcHost'])
         ->setUser($_GET['srcLogin'])
         ->setPassword($_GET['srcPassword'])
