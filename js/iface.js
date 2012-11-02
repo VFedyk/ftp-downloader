@@ -1,14 +1,5 @@
 function step1checkingCallback (params) {
     if (params.result) {
-        changeProgress(0, 'Checking connection to destination server...');
-        testConnection('dst', step2checkingCallback, {});
-    } else {
-        showError('Connection failed');
-    }
-}
-
-function step2checkingCallback (params) {
-    if (params.result) {
         changeProgress(0, 'Trying to download file...');
         getDownloadProgress();
     } else {

@@ -18,7 +18,7 @@
         </div>
 
         <div class="row">
-            <div class="well well-mini span5">
+            <div class="well well-mini span5 offset3">
                 <form class="form-horizontal">
                     <legend>Source Server Details</legend>
                     
@@ -54,54 +54,15 @@
                         </div>
                     </div>
                     
-                </form>
-            </div>
-
-            <div class="well well-mini span5 offset1">
-                <form class="form-horizontal">
-                    <legend>Destination Server Details</legend>
                     <div class="control-group">
-                        <label class="control-label" for="dstHost">Host:</label>
                         <div class="controls">
-                            <input type="text" id="dstHost" placeholder="Host">
+                            <button type="button" class="btn btn-primary" id="startProcess">Start sync</button>
                         </div>
                     </div>
                     
-                    <div class="control-group">
-                        <p class="control-label">FTP-user details</label>
-                        <div class="controls">
-                            <div class="control-group">
-                                <label for="dstLogin">Login:</label>
-                                <input type="text" id="dstLogin" placeholder="Login">
-                            </div>
-                      
-                            <div class="control-group">
-                                <label for="dstPassword">Password:</label>
-                                <input type="password" id="dstPassword" placeholder="Password">
-                            </div>
-                            
-                            <button class="btn" id="dstTest">Test connection<div class="preloader"></div></button>
-                        </div>
-                    </div>
-                    
-                    <div class="control-group">
-                        <label class="control-label" for="dstDir">Destination path:</label>
-                        <div class="controls">
-                            <input type="text" id="dstDir" placeholder="Path">
-                            <button class="btn" id="dstBrowse">Browse<div class="preloader"></div></button>
-                        </div>
-                    </div>
                 </form>
             </div>
-        </div>
-    
-    <div class="row">
-        <div class="form-actions span3 offset4">
-          <button type="button" class="btn btn-primary" id="startProcess">Start sync</button>
-          <button type="button" class="btn">Cancel</button>
-        </div>
-    </div>
-    
+   
     </div>
     
     <div class="modal hide fade" id="popupWindow">
