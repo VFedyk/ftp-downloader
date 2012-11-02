@@ -18,14 +18,14 @@
         </div>
 
         <div class="row">
-            <div class="well well-mini span5 offset3">
+            <div class="well well-mini span7 offset2">
                 <form class="form-horizontal">
                     <legend>Source Server Details</legend>
                     
                     <div class="control-group">
                         <label class="control-label" for="srcHost">Host:</label>
                         <div class="controls">
-                            <input type="text" id="srcHost" placeholder="Host">
+                            <input class="span4" type="text" id="srcHost" placeholder="Host">
                         </div>
                     </div>
                     
@@ -34,12 +34,12 @@
                         <div class="controls">
                             <div class="control-group">
                                 <label for="srcLogin">Login:</label>
-                                <input type="text" id="srcLogin" placeholder="Login">
+                                <input class="span4" type="text" id="srcLogin" placeholder="Login">
                             </div>
                       
                             <div class="control-group">
                                 <label for="srcPassword">Password:</label>
-                                <input type="password" id="srcPassword" placeholder="Password">
+                                <input class="span4" type="password" id="srcPassword" placeholder="Password">
                             </div>
                             
                             <button class="btn" id="srcTest">Test connection<div class="preloader"></div></button>
@@ -54,10 +54,8 @@
                         </div>
                     </div>
                     
-                    <div class="control-group">
-                        <div class="controls">
-                            <button type="button" class="btn btn-primary" id="startProcess">Start sync</button>
-                        </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-primary btn-large" id="startProcess">Start sync</button>
                     </div>
                     
                 </form>
