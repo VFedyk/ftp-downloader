@@ -10,12 +10,17 @@ class FTPTest extends PHPUnit_Framework_TestCase
 	
 
 	/**
-	 *1
+	 * 
 	 */
 	public function testConnect()
 	{
 		$ftp = new FTP($this->host);
 		$ftp->connect();
 		$this->assertTrue($ftp->isConnected());
+	}
+
+	public function testSSLConnect()
+	{
+		$this->markTestIncomplete('This test is not ready yet.');
 	}
 }

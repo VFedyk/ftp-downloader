@@ -1,6 +1,6 @@
 <phpunit>
 	<testsuites>
-		<testsuite name="FTP.class">
+		<testsuite name="FTP class">
 			<directory>tests</directory>
 		</testsuite>
 	</testsuites>
