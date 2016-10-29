@@ -1,3 +1,11 @@
+# CSS vendor files
+css/bootstrap.min.css
+js/themes/apple/style.css
+js/themes/classic/style.css
+js/themes/default-rtl/style.css
+js/themes/default/style.css
+
+# JavaScript vendor files
 js/bootstrap.min.js linguist-vendored
 js/jquery-1.8.2.min.js linguist-vendored
 js/jquery.jstree.js linguist-vendored
