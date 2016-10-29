@@ -5,7 +5,7 @@
         <link rel="stylesheet" href="css/bootstrap.css" />
         <link rel="stylesheet" href="css/style.css" />
         <script src="js/jquery-1.8.2.min.js"></script>
-        <script src="js/bootstrap.js"></script>
+        <script src="js/bootstrap.min.js"></script>
         <script type="text/javascript" src="js/jquery.jstree.js"></script>
         <script src="js/iface.js"></script>
     </head>
