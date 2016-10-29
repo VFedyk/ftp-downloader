@@ -1,13 +1,7 @@
 function formatBytes(bytesAmount) {
 	var suffixes = ['bytes', 'KB', 'MB', 'GB'];
-	var counter = 0;
-
-	while (bytesAmount > 1024) {
-		bytesAmount /= 1024;
-		counter++;
-	}
-
-	bytesAmount = Math.round(bytesAmount * 100) / 100;
+	var counter = Math.floor(Math.pow(bytesAmount, 0.1) / 2);
+	bytesAmount = Math.round(bytesAmount / Math.pow(2, counter * 10) * 100) / 100;
 
 	return bytesAmount + ' ' + suffixes[counter];
 }
