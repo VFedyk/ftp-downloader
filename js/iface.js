@@ -1,24 +1,24 @@
 function formatBytes(bytesAmount)
 {
     var suffix = 'bytes';
-    
+
     if (bytesAmount > 1024) {
         suffix = 'KB';
         bytesAmount /= 1024;
     }
-    
+
     if (bytesAmount > 1024) {
         suffix = 'MB';
         bytesAmount /= 1024;
     }
-    
+
     if (bytesAmount > 1024) {
         suffix = 'GB';
         bytesAmount /= 1024;
     }
-    
+
     bytesAmount = Math.round(bytesAmount * 100) / 100;
-    
+
     return bytesAmount + ' ' + suffix;
 }
 
@@ -37,14 +37,14 @@ function getDownloadProgress()
     var srcLogin = $('#srcLogin').val();
     var srcPassword = $('#srcPassword').val();
     var srcFile = $('#srcDir').val();
-    
+
     if (srcLogin == '') {
         srcLogin = 'anonymous';
     }
-    
+
     var today = new Date();
     var id = today.getTime();
-    
+
     $('#progressData').load('ajax.php',
                             'operation=downloadfile' +
                             '&srcHost=' + srcHost +
@@ -53,23 +53,23 @@ function getDownloadProgress()
                             '&srcFile=' + srcFile +
                             '&id=' + id
                         );
-    
-    var appInterval = setInterval(function() { 
+
+    var appInterval = setInterval(function() {
             var jqxr = $.getJSON('ajax.php?operation=get_progress&id=' + id);
-            
+
             jqxr.done(function(data) {
                 if ((data.id+'') !== (id+'')) {
 
                     return;
                 }
-                
+
                 if (data.downloaded == data.filesize) {
                     showSuccess('File is downloaded');
                     clearTimeout(appInterval);
-                    
+
                     return;
                 }
-                
+
                 var downloadingMessage = 'Downloading file... [';
                 downloadingMessage += formatBytes(data.downloaded) + " / " + formatBytes(data.filesize) + "]";
                 changeProgress(data.progress, downloadingMessage);
@@ -77,17 +77,17 @@ function getDownloadProgress()
         }, 1000);
 }
 
-function testingCallback (params) 
+function testingCallback (params)
 {
     $('#' + params.serverType + 'Test .preloader').hide();
     if (params.result) {
-        showSuccess('Connection succesful');
+        showSuccess('Connection successful');
     } else {
         showError('Connection failed');
     }
 }
 
-function browsingCallback (params) 
+function browsingCallback (params)
 {
     $('#' + params.serverType + 'Browse .preloader').hide();
     if (params.result) {
@@ -97,25 +97,25 @@ function browsingCallback (params)
     }
 }
 
-function testConnection (serverType, callback, params) 
+function testConnection (serverType, callback, params)
 {
         var host = $('#' + serverType + 'Host').val();
         var login =  $('#' + serverType + 'Login').val();
         var password = $('#' + serverType + 'Password').val();
         var srvType = (serverType == 'src') ? 'source' : 'destination';
-        
+
         var jqxr = $.ajax({
                         url: "ajax.php",
                         dataType: 'json',
                         data: { 'server': srvType,
                                 'host': host,
                                 'login': login,
-                                'password': password },
+                                'password': password }
                     });
-        
+
         params.serverType = serverType;
         params.result = false;
-        
+
         jqxr.done(function(data){
             if (data.status === 'success') {
                 params.result = true;
@@ -130,27 +130,27 @@ function testConnection (serverType, callback, params)
 function showError(message)
 {
     $('#popupWindow .modal-header h3').html('Error');
-    var content = "<p class=\"error-message\">" + message + "</p>";
+    var content = '<p class="error-message">' + message + '</p>';
     $('#popupWindow .modal-body').html(content);
-    $('#popupWindow .modal-footer').html("<a href=\"#\" class=\"btn\" data-dismiss=\"modal\">Close</a>");
+    $('#popupWindow .modal-footer').html('<a href="#" class="btn" data-dismiss="modal">Close</a>');
     $('#popupWindow').modal();
 }
 
 function showInfo(message)
 {
     $('#popupWindow .modal-header h3').html('Information');
-    var content = "<p class=\"info-message\">" + message + "</p>";
+    var content = '<p class="info-message">' + message + '</p>';
     $('#popupWindow .modal-body').html(content);
-    $('#popupWindow .modal-footer').html("<a href=\"#\" class=\"btn\" data-dismiss=\"modal\">Ok</a>");
+    $('#popupWindow .modal-footer').html('<a href="#" class="btn" data-dismiss="modal">Ok</a>');
     $('#popupWindow').modal();
 }
 
 function showSuccess(message)
 {
     $('#popupWindow .modal-header h3').html('Information');
-    var content = "<p class=\"success-message\">" + message + "</p>";
+    var content = '<p class="success-message">' + message + '</p>';
     $('#popupWindow .modal-body').html(content);
-    $('#popupWindow .modal-footer').html("<a href=\"#\" class=\"btn\" data-dismiss=\"modal\">Ok</a>");
+    $('#popupWindow .modal-footer').html('<a href="#" class="btn" data-dismiss="modal">Ok</a>');
     $('#popupWindow').modal();
 }
 
@@ -162,9 +162,9 @@ function showTreeDialog(serverType)
 
     var srvType = (serverType == 'src') ? 'source' : 'destination';
     $('#popupWindow .modal-header h3').html('Choosing files on ' + srvType + ' server');
-    $('#popupWindow .modal-body').html("<div id=\"fsTree\"></div><div id=\"fsFileinfo\"></div>");
-    var footerContent = "<a href=\"#\" class=\"btn\" data-dismiss=\"modal\">Cancel</a>";
-    footerContent += "<a id=\"selectBtn\" href=\"#\" class=\"btn btn-primary disabled\">Select</a>";
+    $('#popupWindow .modal-body').html('<div id="fsTree"></div><div id="fsFileinfo"></div>');
+    var footerContent = '<a href="#" class="btn" data-dismiss="modal">Cancel</a>';
+    footerContent += '<a id="selectBtn" href="#" class="btn btn-primary disabled">Select</a>';
     $('#popupWindow .modal-footer').html(footerContent);
     $('#fsFileinfo').data('servertype', serverType);
     $('#popupWindow').modal();
@@ -173,16 +173,15 @@ function showTreeDialog(serverType)
         if ($(this).hasClass('disabled')) {
             return;
         }
-        
+
         $('#' + serverType + 'Dir').val($('#fsFileinfo').data('path'));
         $('#popupWindow').modal('hide');
     });
-    
-    $('#fsTree')
-    .bind('select_node.jstree', function(event, data) {
+
+    $('#fsTree').bind('select_node.jstree', function(event, data) {
         var path = data.rslt.obj.attr('path');
         var type = data.rslt.obj.attr('rel');
-        
+
         if ((type == 'default' && serverType == 'src') || (type == 'folder' && serverType == 'dst')) {
             $('#selectBtn').removeClass('disabled');
             $('#fsFileinfo').data('path', path);
@@ -193,7 +192,7 @@ function showTreeDialog(serverType)
             $('#fsFileinfo').data('path', '');
         }
     })
-    
+
     .jstree({
         plugins: ["themes","json_data","ui","types"],
         "json_data" : {
@@ -209,7 +208,7 @@ function showTreeDialog(serverType)
                         id = 1;
                         path = "/";
                     }
-                    
+
                     return {
                         "server" : srvType,
                         "host" : host,
@@ -222,7 +221,7 @@ function showTreeDialog(serverType)
                 }
             }
         },
-        
+
         "types" : {
             "max_depth" : -2,
             "max_children" : -2,
@@ -248,12 +247,12 @@ function showTreeDialog(serverType)
 function showProgress (title, message, progress)
 {
     $('#popupWindow .modal-header h3').html(title);
-    
-    var content = "<p><span id=\"progressMessage\">" + message + "</span> <span id=\"progressLabel\" class=\"pull-right\">" + progress + "%<\/span></p>";
-    content += "<div class=\"progress progress-success progress-striped active\"><div id=\"progressBar\" class=\"bar\" style=\"width: " + progress + "%\"></div><\/div>";
-    content += "<div id=\"progressData\"></div>";
+
+    var content = '<p><span id="progressMessage">' + message + '</span> <span id="progressLabel" class="pull-right">' + progress + '%</span></p>';
+    content += '<div class="progress progress-success progress-striped active"><div id="progressBar" class="bar" style="width: ' + progress + '%"></div></div>';
+    content += '<div id="progressData"></div>';
     $('#popupWindow .modal-body').html(content);
-    $('#popupWindow .modal-footer').html("<a href=\"#\" class=\"btn\" data-dismiss=\"modal\">Cancel</a>");
+    $('#popupWindow .modal-footer').html('<a href="#" class="btn" data-dismiss="modal">Cancel</a>');
     $('#popupWindow').modal();
 }
 
@@ -270,44 +269,42 @@ $(function() {
         $('#srcTest .preloader').show();
         testConnection('src', testingCallback, {});
     });
-    
+
     $('#dstTest').click(function(e){
         e.preventDefault();
         $('#dstTest .preloader').show();
         testConnection('dst', testingCallback, {});
     });
-    
+
     $('#srcBrowse').click(function(e){
         e.preventDefault();
         $('#srcBrowse .preloader').show();
         testConnection('src', browsingCallback, {});
     });
-    
+
     $('#dstBrowse').click(function(e){
         e.preventDefault();
         $('#dstBrowse .preloader').show();
         testConnection('dst', browsingCallback, {});
     });
-    
+
     $('#startProcess').click(function(e) {
         var srcHost = $('#srcHost').val();
         var srcLogin = $('#srcLogin').val();
         var srcPassword = $('#srcPassword').val();
         var srcFile = $('#srcDir').val();
-        
+
         if (srcLogin == '') {
             srcLogin = 'anonymous';
         }
-        
+
         if (srcHost == '' || srcLogin == '' || srcFile == '') {
             showError('You need to fill all fields!');
-            
+
             return;
         }
-        
+
         showProgress('Please wait', 'Checking connection to source server...', 0);
         testConnection('src', step1checkingCallback, {});
-        
-        return;
     });
 });
