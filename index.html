@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <title>FTP-downloader</title>
-        <link rel="stylesheet" href="css/bootstrap.min.css" />
-        <link rel="stylesheet" href="css/style.css" />
-    </head>
-  <body>
+<head>
+    <title>FTP-downloader</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
     <div class="container">
-        <div class="navbar">
+        <div class="navbar span9 offset1">
             <div class="navbar-inner">
-                <a class="brand" href="#">FTP-synchronization script</a>
+                <a class="brand" href="#">FTP-downloader</a>
             </div>
         </div>
 
@@ -21,24 +21,27 @@
                     <div class="control-group">
                         <label class="control-label" for="srcHost">Host:</label>
                         <div class="controls">
-                            <input class="span4" type="text" id="srcHost" placeholder="Host">
+                            <input class="span4" type="text" id="srcHost" placeholder="localhost">
                         </div>
                     </div>
 
                     <div class="control-group">
-                        <label class="control-label">FTP-user details</label>
+                        <label class="control-label" for="srcLogin">Login:</label>
                         <div class="controls">
-                            <div class="control-group">
-                                <label for="srcLogin">Login:</label>
-                                <input class="span4" type="text" id="srcLogin" placeholder="Login">
-                            </div>
+                            <input class="span4" type="text" id="srcLogin" placeholder="anonymous">
+                        </div>
+                    </div>
 
-                            <div class="control-group">
-                                <label for="srcPassword">Password:</label>
-                                <input class="span4" type="password" id="srcPassword" placeholder="Password">
-                            </div>
+                    <div class="control-group">
+                        <label class="control-label" for="srcPassword">Password:</label>
+                        <div class="controls">
+                            <input class="span4" type="password" id="srcPassword" placeholder="leave blank for anonymous">
+                        </div>
+                    </div>
 
-                            <button class="btn" id="srcTest">Test connection<div class="preloader"></div></button>
+                    <div class="control-group">
+                        <div class="controls">
+                            <button class="btn" id="srcTest">Test credentials<div class="preloader"></div></button>
                         </div>
                     </div>
 
@@ -56,7 +59,7 @@
 
                 </form>
             </div>
-
+        </div>
     </div>
 
     <div class="modal hide fade" id="popupWindow">
@@ -74,13 +77,13 @@
     </div>
 
     <div class="row">
-        <p>2012 - 2016 &copy; Copyright <a href="http://fedyk.in">Volodymyr Fedyk</a></p>
+        <p class="text-center">2012 - 2016 &copy; Copyright <a href="http://fedyk.in">Volodymyr Fedyk</a></p>
     </div>
 
-	<script src="js/jquery-1.8.2.min.js"></script>
-	<script src="js/bootstrap.min.js"></script>
-	<script src="js/jquery.jstree.js"></script>
-	<script src="js/iface.js"></script>
+    <script src="js/jquery-1.8.2.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery.jstree.js"></script>
+    <script src="js/iface.js"></script>
 
-  </body>
+</body>
 </html>

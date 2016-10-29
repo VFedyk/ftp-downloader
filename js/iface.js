@@ -99,59 +99,56 @@ function browsingCallback (params)
 
 function testConnection (serverType, callback, params)
 {
-        var host = $('#' + serverType + 'Host').val();
-        var login =  $('#' + serverType + 'Login').val();
-        var password = $('#' + serverType + 'Password').val();
-        var srvType = (serverType == 'src') ? 'source' : 'destination';
+    var host = $('#' + serverType + 'Host').val();
+    var login =  $('#' + serverType + 'Login').val();
+    var password = $('#' + serverType + 'Password').val();
+    var srvType = (serverType == 'src') ? 'source' : 'destination';
 
-        var jqxr = $.ajax({
-                        url: "ajax.php",
-                        dataType: 'json',
-                        data: { 'server': srvType,
-                                'host': host,
-                                'login': login,
-                                'password': password }
-                    });
+    var jqxr = $.ajax({
+                    url: "ajax.php",
+                    dataType: 'json',
+                    data: { 'server': srvType,
+                            'host': host,
+                            'login': login,
+                            'password': password }
+                });
 
-        params.serverType = serverType;
-        params.result = false;
+    params.serverType = serverType;
+    params.result = false;
 
-        jqxr.done(function(data){
-            if (data.status === 'success') {
-                params.result = true;
-                callback(params);
-            } else {
-                params.result = false;
-                callback(params);
-            }
-        });
+    jqxr.done(function(data){
+        if (data.status === 'success') {
+            params.result = true;
+            callback(params);
+        } else {
+            params.result = false;
+            callback(params);
+        }
+    });
+}
+
+function showMessageBox(type, message) {
+    var dialogTitle = (type === 'error') ? 'Error' : 'Information';
+    $('#popupWindow .modal-header h3').html(dialogTitle);
+    var content = '<p class="' + type + '-message">' + message + '</p>';
+    $('#popupWindow .modal-body').html(content);
+    $('#popupWindow .modal-footer').html('<a href="#" class="btn" data-dismiss="modal">Ok</a>');
+    $('#popupWindow').modal();
 }
 
 function showError(message)
 {
-    $('#popupWindow .modal-header h3').html('Error');
-    var content = '<p class="error-message">' + message + '</p>';
-    $('#popupWindow .modal-body').html(content);
-    $('#popupWindow .modal-footer').html('<a href="#" class="btn" data-dismiss="modal">Close</a>');
-    $('#popupWindow').modal();
+    showMessageBox('error', message);
 }
 
 function showInfo(message)
 {
-    $('#popupWindow .modal-header h3').html('Information');
-    var content = '<p class="info-message">' + message + '</p>';
-    $('#popupWindow .modal-body').html(content);
-    $('#popupWindow .modal-footer').html('<a href="#" class="btn" data-dismiss="modal">Ok</a>');
-    $('#popupWindow').modal();
+    showMessageBox('info', message);
 }
 
 function showSuccess(message)
 {
-    $('#popupWindow .modal-header h3').html('Information');
-    var content = '<p class="success-message">' + message + '</p>';
-    $('#popupWindow .modal-body').html(content);
-    $('#popupWindow .modal-footer').html('<a href="#" class="btn" data-dismiss="modal">Ok</a>');
-    $('#popupWindow').modal();
+    showMessageBox('success', message);
 }
 
 function showTreeDialog(serverType)
@@ -181,13 +178,14 @@ function showTreeDialog(serverType)
     $('#fsTree').bind('select_node.jstree', function(event, data) {
         var path = data.rslt.obj.attr('path');
         var type = data.rslt.obj.attr('rel');
+        var $selectionButton = $('#selectBtn');
 
         if ((type == 'default' && serverType == 'src') || (type == 'folder' && serverType == 'dst')) {
-            $('#selectBtn').removeClass('disabled');
+            $selectionButton.removeClass('disabled');
             $('#fsFileinfo').data('path', path);
         } else {
-            if (!$('#selectBtn').hasClass('disabled')) {
-                $('#selectBtn').addClass('disabled');
+            if (!$selectionButton.hasClass('disabled')) {
+                $selectionButton.addClass('disabled');
             }
             $('#fsFileinfo').data('path', '');
         }
@@ -240,7 +238,7 @@ function showTreeDialog(serverType)
                     }
                 }
             }
-        },
+        }
     });
 }
 
