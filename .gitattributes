@@ -1,9 +1,9 @@
 # CSS vendor files
-css/bootstrap.min.css
-js/themes/apple/style.css
-js/themes/classic/style.css
-js/themes/default-rtl/style.css
-js/themes/default/style.css
+css/bootstrap.min.css linguist-vendored
+js/themes/apple/style.css linguist-vendored
+js/themes/classic/style.css linguist-vendored
+js/themes/default-rtl/style.css linguist-vendored
+js/themes/default/style.css linguist-vendored
 
 # JavaScript vendor files
 js/bootstrap.min.js linguist-vendored
