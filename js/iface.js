@@ -1,3 +1,35 @@
+function ModalDialog(selector) {
+	this.selector = selector;
+	this.$element = $(selector);
+	this.$header = $(selector).find('.modal-header h3');
+	this.$contentBody = $(selector).find('.modal-body');
+	this.$footer = $(selector).find('.modal-footer');
+	var self = this;
+
+	this.setContent = function(contentHTML) {
+		self.$contentBody.html(contentHTML);
+
+		return self;
+	};
+
+	this.setHeader = function(header) {
+		this.$header.text(header);
+
+		return self;
+	};
+
+	this.setFooter = function(footerHTML) {
+		this.$footer.html(footerHTML);
+
+		return self;
+	};
+
+	this.show = function() {
+		this.$element.modal();
+	}
+}
+
+
 function formatBytes(bytesAmount) {
 	var suffixes = ['bytes', 'KB', 'MB', 'GB'];
 	var counter = Math.floor(Math.pow(bytesAmount, 0.1) / 2);
@@ -109,26 +141,24 @@ function testConnection(serverType, callback, params) {
 	});
 }
 
-function showMessageBox(type, message) {
-	var dialogTitle = (type === 'error') ? 'Error' : 'Information';
-	var $popupWindow = $('#popupWindow');
-	$popupWindow.find('.modal-header h3').html(dialogTitle);
-	var content = '<p class="' + type + '-message">' + message + '</p>';
-	$popupWindow.find('.modal-body').html(content);
-	$popupWindow.find('.modal-footer').html('<a href="#" class="btn" data-dismiss="modal">Ok</a>');
-	$popupWindow.modal();
+function showMessageBox(title, message, type) {
+	(new ModalDialog('#popupWindow'))
+		.setHeader(title)
+		.setContent('<p class="' + type + '-message">' + message + '</p>')
+		.setFooter('<a href="#" class="btn" data-dismiss="modal">Ok</a>')
+		.show();
 }
 
 function showError(message) {
-	showMessageBox('error', message);
+	showMessageBox('Error', message, 'error');
 }
 
 function showInfo(message) {
-	showMessageBox('info', message);
+	showMessageBox('Information', message, 'info');
 }
 
 function showSuccess(message) {
-	showMessageBox('success', message);
+	showMessageBox('Operation succeeded', message, 'success');
 }
 
 function showTreeDialog(serverType) {
@@ -222,20 +252,26 @@ function showTreeDialog(serverType) {
 		});
 }
 
-function showProgress(title, message, progress) {
-	$('#popupWindow').find('.modal-header h3').html(title);
-
-	var content = '<p><span id="progressMessage">' + message + '</span> <span id="progressLabel" class="pull-right">' + progress + '%</span></p>';
-	content += '<div class="progress progress-success progress-striped active"><div id="progressBar" class="bar" style="width: ' + progress + '%"></div></div>';
+function showProgressBar(message) {
+	var content = '<p><span id="progressMessage">Checking connection to source server...</span> <span id="progressLabel" class="pull-right hide">0%</span></p>';
+	content += '<div class="progress progress-success progress-striped active"><div id="progressBar" class="bar" style="width: 0"></div></div>';
 	content += '<div id="progressData"></div>';
-	$('#popupWindow').find('.modal-body').html(content);
-	$('#popupWindow').find('.modal-footer').html('<a href="#" class="btn" data-dismiss="modal">Cancel</a>');
-	$('#popupWindow').modal();
+
+	(new ModalDialog('#popupWindow'))
+		.setHeader('Please wait')
+		.setContent(content)
+		.setFooter('')
+		.show();
 }
 
 function changeProgress(progress, message) {
+	var $progressLabel = $('#progressLabel');
+	if ($progressLabel.hasClass('hide')) {
+		$progressLabel.removeClass('hide');
+	}
+
+	$progressLabel.text(progress + '%');
 	$('#progressMessage').html(message);
-	$('#progressLabel').html(progress + '%');
 	$('#progressBar').width(progress + '%');
 }
 
@@ -274,13 +310,13 @@ $(function () {
 			srcLogin = 'anonymous';
 		}
 
-		if (srcHost == '' || srcLogin == '' || srcFile == '') {
-			showError('You need to fill all fields!');
+		if (srcFile === '') {
+			showError('You need to select file on remote server!');
 
 			return;
 		}
 
-		showProgress('Please wait', 'Checking connection to source server...', 0);
+		showProgressBar();
 		testConnection('src', step1checkingCallback, {});
 	});
 });
