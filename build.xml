@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="FTP Downloader" default="build">
+  <target name="build" depends="prepare,phpunit,-check-failure"/>
+  
+  <target name="clean" unless="clean.done" description="Cleanup build artifacts">
+        <delete dir="${basedir}/build/api"/>
+        <delete dir="${basedir}/build/coverage"/>
+        <delete dir="${basedir}/build/logs"/>
+        <delete dir="${basedir}/build/pdepend"/>
+        <property name="clean.done" value="true"/>
+    </target>
+
+    <target name="prepare" unless="prepare.done" depends="clean,generate-code" description="Prepare for build">
+        <mkdir dir="${basedir}/build/api"/>
+        <mkdir dir="${basedir}/build/coverage"/>
+        <mkdir dir="${basedir}/build/logs"/>
+        <mkdir dir="${basedir}/build/pdepend"/>
+        <property name="prepare.done" value="true"/>
+    </target>
+    
+    <target name="phpunit" depends="prepare" description="Run unit tests with PHPUnit">
+        <exec executable="${basedir}/build/tools/phpunit.phar" resultproperty="result.phpunit" taskname="phpunit">
+            <arg value="--configuration"/>
+            <arg path="${basedir}/build/phpunit.xml"/>
+        </exec>
+    </target>
+    
+    <target name="-check-failure">
+        <fail message="PHPUnit did not finish successfully">
+            <condition>
+                <not>
+                    <equals arg1="${result.phpunit}" arg2="0"/>
+                </not>
+            </condition>
+        </fail>
+    </target>
+  
+</project>
