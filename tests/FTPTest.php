@@ -6,7 +6,7 @@ require_once __DIR__ . $DS . ".." . $DS . "FTP.class.php";
 
 class FTPTest extends PHPUnit_Framework_TestCase
 {
-	private $host = 'ftp.kernel.org';
+	private $host = 'ftp.ubuntu.com';
 	
 
 	/**
