@@ -10,7 +10,7 @@
         <property name="clean.done" value="true"/>
     </target>
 
-    <target name="prepare" unless="prepare.done" depends="clean,generate-code" description="Prepare for build">
+    <target name="prepare" unless="prepare.done" depends="clean" description="Prepare for build">
         <mkdir dir="${basedir}/build/api"/>
         <mkdir dir="${basedir}/build/coverage"/>
         <mkdir dir="${basedir}/build/logs"/>
